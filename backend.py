@@ -17,6 +17,20 @@ def insert(name,quantity,chategories):
     conn.close()
     view()
 
+
+
+def search(name="",chategory=""):
+    conn=sqlite3.connect("database.db")
+    cur=conn.cursor()
+    cur.execute("SELECT * FROM products WHERE name=? OR chategory=?",(name,chategory))
+    row=cur.fetchall()
+    conn.close()
+    return row
+
+
+
+
+
 def view():
     view_result=[]
     conn=sqlite3.connect("database.db")
