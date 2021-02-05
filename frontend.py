@@ -84,6 +84,23 @@ def insert_entry(name,quantity):
 
 
 
+def search_entry(name,chategory):
+	print(name,chategory)
+	list1.delete(0,END)
+	for row in backend.search(name,chategory):
+		list1.insert(END,row)
+
+
+
+
+
+
+
+
+
+
+
+
 #------------------------function to add more category in create --------#
 
 def add_more_category_function(chategory):
@@ -166,7 +183,7 @@ def option_gui():
 		product_category_n.place(x=390,y=350)
 
 
-		final_insertion_button=Button(window,text="submit",bg = "white",width=10,command=lambda:[insert_entry(product_name.get(1.0,END+"-1c"),product_quantity.get(1.0,END+"-1c")),product_name.delete('1.0',END),product_quantity.delete('1.0',END)])
+		final_insertion_button=Button(window,text="submit",bg = "white",width=10,command=lambda:search_entry(product_name.get(1.0,END+"-1c"),product_category_n.get(1.0,END+"-1c")))
 		final_insertion_button.place(x=200,y=450)
 
 		clear_all_button=Button(window,text="remove all",bg = "white",width=15,command=lambda:[product_name_label.place_forget(),product_name.place_forget(),product_category_label.place_forget(),product_category_n.place_forget(),final_insertion_button.place_forget(),clear_all_button.place_forget()])
