@@ -4,17 +4,19 @@ import backend
 import json
 
 window=Tk()
-frame = Frame(window)
-window.geometry("1600x790")
+#frame = Frame(window)
+width, height = window.winfo_screenwidth(), window.winfo_screenheight()
+
+window.geometry('%dx%d+0+0' % (width,height))
 
 
 
 #-------------------global variables-------------------------
 
 OPTIONS = [
-"Create",
+"New Product",
 "Search",
-"Edit"
+"update stock"
 ]
 
 
@@ -37,18 +39,6 @@ def get_selected_row(event):
     global selected_tuple
     index=list1.curselection()[0]
     selected_tuple=list1.get(index)
-    '''entry1.delete(0,END)
-    entry1.insert(END,selected_tuple[1])
-    entry2.delete(0,END)
-    entry2.insert(END,selected_tuple[2])
-    entry3.delete(0,END)
-    entry3.insert(END,selected_tuple[3])
-    entry4.delete(0,END)
-    entry4.insert(END,selected_tuple[4])
-    entry5.delete(0,END)
-    entry5.insert(END,selected_tuple[5])
-    entry6.delete(0,END)
-    entry6.insert(END,selected_tuple[6])'''
 
 
 def view_command():
@@ -57,10 +47,6 @@ def view_command():
         list1.insert(END,row)
 
 
-'''def search_command():
-    list1.delete(0,END)
-    for row in back.search(name_text.get(),address_text.get(),phone_number_text.get(),roomtype_text.get(),noof_text.get(),amount_text.get()):
-        list1.insert(END,row)'''
 
 
 
@@ -85,13 +71,19 @@ def insert_entry(name,quantity):
 
 
 def search_entry(name,chategory):
-	print(name,chategory)
+	#print(name,chategory)
 	list1.delete(0,END)
-	for row in backend.search(name,chategory):
-		list1.insert(END,row)
+	if backend.search(name,chategory)==[]:
+		messagebox.showinfo("showinfo", "entry not present")
+
+	else:
+
+		for row in backend.search(name,chategory):
+			list1.insert(END,row)
 
 
-
+def price_reminder(quantity):
+	print(quantity)
 
 
 
@@ -130,7 +122,7 @@ what_to_do_choice.place(x=390,y=202)
 
 def option_gui():
 	action_want_to_perform=choice.get()
-	if choice.get()=="Create":
+	if choice.get()=="New Product":
 
 		product_name_label=Label(window,text="product name",font=("times",18,"bold"))
 		product_name_label.place(x=30,y=300)
@@ -189,6 +181,40 @@ def option_gui():
 		clear_all_button=Button(window,text="remove all",bg = "white",width=15,command=lambda:[product_name_label.place_forget(),product_name.place_forget(),product_category_label.place_forget(),product_category_n.place_forget(),final_insertion_button.place_forget(),clear_all_button.place_forget()])
 		clear_all_button.place(x=340,y=448)
 
+	elif choice.get()=="update stock":
+		product_name_label=Label(window,text="product name",font=("times",18,"bold"))
+		product_name_label.place(x=30,y=300)
+
+		product_name=Text(window,height=1,width=14)
+		product_name.place(x=390,y=300)
+
+		product_quantity_label=Label(window,text="Quantity",font=("times",18,"bold"))
+		product_quantity_label.place(x=30,y=350)
+
+		product_quantity=Text(window,height=1,width=14)
+		product_quantity.place(x=390,y=350)
+
+		quantity=product_quantity.get(1.0,END+"-1c")
+
+
+		final_insertion_button=Button(window,text="submit",bg = "white",width=10,command=lambda:)
+		final_insertion_button.place(x=200,y=450)
+
+
+		product_category_label=Label(window,text="Add Product category ",font=("times",18,"bold"))
+		product_category_label.place(x=30,y=400)
+
+
+		product_category_n=Text(window,height=1,width=14)
+		product_category_n.place(x=390,y=400)
+
+
+		add_more_category_button=Button(window,text="add",bg = "white",width=5,command=lambda:[add_more_category_function(product_category_n.get(1.0,END+"-1c")),product_category_n.delete('1.0',END)])
+		add_more_category_button.place(x=520,y=400)
+
+
+		clear_all_button=Button(window,text="remove all",bg = "white",width=15,command=lambda:[product_name_label.place_forget(),product_name.place_forget(),product_quantity.place_forget(),product_quantity_label.place_forget(),product_category_label.place_forget(),product_category_n.place_forget(),add_more_category_button.place_forget(),final_insertion_button.place_forget(),add_more_category_button.place_forget(),clear_all_button.place_forget()])
+		clear_all_button.place(x=340,y=448)
 
 
  
@@ -215,6 +241,14 @@ list1.bind('<<ListboxSelect>>',get_selected_row)
 
 b1=Button(window,text="view all",width=12, command=view_command)
 b1.place(x=700,y=600)
+
+
+quantity_reminder=Text(window,height=1,width=10)
+quantity_reminder.place(x=1000,y=200)
+
+
+quantity_reminder_button=Button(window,text="show",bg = "white",width=10,command=lambda:price_reminder(quantity_reminder.get(1.0,END+"-1c")))
+quantity_reminder_button.place(x=1000,y=235)
 
 
 

@@ -22,7 +22,7 @@ def insert(name,quantity,chategories):
 def search(name="",chategory=""):
     conn=sqlite3.connect("database.db")
     cur=conn.cursor()
-    cur.execute("SELECT * FROM products WHERE name=? OR chategory=?",(name,chategory))
+    cur.execute("SELECT DISTINCT name , quantity , chategory FROM products WHERE name=? OR chategory=?",(name,chategory))
     row=cur.fetchall()
     conn.close()
     return row
