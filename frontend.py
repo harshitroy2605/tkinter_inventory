@@ -26,16 +26,15 @@ previous_choice_made=0
 
 #----------------------------------
 
-product_name_label=0
-product_name=0
-product_quantity=0
-product_quantity_label=0
-product_category_label=0
-product_category_n=0
-add_more_category_button=0
-final_insertion_button=0
-add_more_category_button=0
-clear_all_button=0
+product_name_label=None
+product_name=None
+product_quantity=None
+product_quantity_label=None
+product_category_label=None
+product_category_n=None
+add_more_category_button=None
+final_insertion_button=None
+#add_more_category_button=''
 
 #----------------------initial gui parts -------------------------#
 
@@ -52,7 +51,11 @@ def get_selected_row(event):
     global selected_tuple
     index=list1.curselection()[0]
     selected_tuple=list1.get(index)
-
+    if selected_tuple is not None:
+    	backend.display_list(selected_tuple[0])
+    	#print(END,selected_tuple[1])
+    	#print(END,selected_tuple[2])
+    	
 
 def view_command():
     list1.delete(0,END)
@@ -100,7 +103,7 @@ def price_reminder(quantity):
 
 
 def delete_previous_label(choice):
-	print(previous_choice_made)
+	#print(previous_choice_made)
 	if previous_choice_made=="New Product":
 		product_name_label.place_forget()
 		product_name.place_forget()
@@ -117,8 +120,8 @@ def delete_previous_label(choice):
 		product_name.place_forget()
 		product_quantity.place_forget()
 		product_quantity_label.place_forget()
-		product_category_label.place_forget()
-		product_category_n.place_forget()
+		#product_category_label.place_forget()
+		#product_category_n.place_forget()
 		final_insertion_button.place_forget()
 
 	elif previous_choice_made=="update stock":
@@ -132,6 +135,11 @@ def delete_previous_label(choice):
 		final_insertion_button.place_forget()
 
 
+def update_function(name,quantity,chategory):
+	global list_of_inserted_chategory
+	#print(list_of_inserted_chategory)
+	#print(name,quantity,chategory)
+	backend.update(name,quantity,chategory,list_of_inserted_chategory)
 
 
 
@@ -164,7 +172,7 @@ what_to_do_choice.place(x=390,y=202)
 
 
 def option_gui():
-	global previous_choice_made,product_name_label,product_name,product_quantity,product_quantity_label,product_category_label,product_category_n,add_more_category_button,final_insertion_button,add_more_category_button,clear_all_button
+	global previous_choice_made,product_name_label,product_name,product_quantity,product_quantity_label,product_category_label,product_category_n,final_insertion_button,add_more_category_button
 	action_want_to_perform=choice.get()
 	if choice.get()=="New Product":
 		delete_previous_label(previous_choice_made)
@@ -176,10 +184,10 @@ def option_gui():
 		product_name.place(x=390,y=300)
 
 		product_quantity_label=Label(window,text="Quantity",font=("times",18,"bold"))
-		product_quantity_label.place(x=30,y=350)
+		product_quantity_label.place(x=30,y=400)
 
 		product_quantity=Text(window,height=1,width=14)
-		product_quantity.place(x=390,y=350)
+		product_quantity.place(x=390,y=400)
 		quantity=product_quantity.get(1.0,END+"-1c")
 
 		previous_choice_made="New Product"
@@ -187,16 +195,17 @@ def option_gui():
 
 
 		product_category_label=Label(window,text="Enter Product category",font=("times",18,"bold"))
-		product_category_label.place(x=30,y=400)
+		product_category_label.place(x=30,y=350)
 
 
 		product_category_n=Text(window,height=1,width=14)
-		product_category_n.place(x=390,y=400)
+		product_category_n.place(x=390,y=350)
 
 
 		add_more_category_button=Button(window,text="add",bg = "white",width=5,command=lambda:[add_more_category_function(product_category_n.get(1.0,END+"-1c")),product_category_n.delete('1.0',END)])
-		add_more_category_button.place(x=520,y=400)
+		add_more_category_button.place(x=520,y=350)
 
+		previous_choice_made="New Product"
 
 		final_insertion_button=Button(window,text="submit",bg = "white",width=10,command=lambda:[insert_entry(product_name.get(1.0,END+"-1c"),product_quantity.get(1.0,END+"-1c")),product_name.delete('1.0',END),product_quantity.delete('1.0',END)])
 		final_insertion_button.place(x=200,y=450)
@@ -218,18 +227,18 @@ def option_gui():
 
 
 		product_category_label=Label(window,text="Enter Product category",font=("times",18,"bold"))
-		product_category_label.place(x=30,y=400)
+		product_category_label.place(x=30,y=350)
 
 
 		product_category_n=Text(window,height=1,width=14)
-		product_category_n.place(x=390,y=400)
+		product_category_n.place(x=390,y=350)
 
-		product_quantity_label=Label(window,text="Quantity",font=("times",18,"bold"))
-		product_quantity_label.place(x=30,y=350)
+		#product_quantity_label=Label(window,text="Quantity",font=("times",18,"bold"))
+		#product_quantity_label.place(x=30,y=350)
 
-		product_quantity=Text(window,height=1,width=14)
-		product_quantity.place(x=390,y=350)
-		quantity=product_quantity.get(1.0,END+"-1c")
+		#product_quantity=Text(window,height=1,width=14)
+		#product_quantity.place(x=390,y=350)
+		#quantity=product_quantity.get(1.0,END+"-1c")
 
 		previous_choice_made="search"
 		final_insertion_button=Button(window,text="Search",bg = "white",width=10,command=lambda:search_entry(product_name.get(1.0,END+"-1c"),product_category_n.get(1.0,END+"-1c")))
@@ -247,10 +256,10 @@ def option_gui():
 		product_name.place(x=390,y=300)
 
 		product_quantity_label=Label(window,text="Quantity",font=("times",18,"bold"))
-		product_quantity_label.place(x=30,y=350)
+		product_quantity_label.place(x=30,y=400)
 
 		product_quantity=Text(window,height=1,width=14)
-		product_quantity.place(x=390,y=350)
+		product_quantity.place(x=390,y=400)
 
 		quantity=product_quantity.get(1.0,END+"-1c")
 
@@ -260,18 +269,21 @@ def option_gui():
 
 
 		product_category_label=Label(window,text="Enter Product category",font=("times",18,"bold"))
-		product_category_label.place(x=30,y=400)
+		product_category_label.place(x=30,y=350)
 
 
 		product_category_n=Text(window,height=1,width=14)
-		product_category_n.place(x=390,y=400)
+		product_category_n.place(x=390,y=350)
 
 		previous_choice_made="update stock"
 
 
 		add_more_category_button=Button(window,text="add",bg = "white",width=5,command=lambda:[add_more_category_function(product_category_n.get(1.0,END+"-1c")),product_category_n.delete('1.0',END)])
-		add_more_category_button.place(x=520,y=400)
+		add_more_category_button.place(x=520,y=350)
 
+
+		final_insertion_button=Button(window,text="Update",bg = "white",width=10,command=lambda:[update_function(product_name.get(1.0,END+"-1c"),product_quantity.get(1.0,END+"-1c"),product_category_n.get(1.0,END+"-1c"))])
+		final_insertion_button.place(x=200,y=450)
 
 		#clear_all_button=Button(window,text="remove all",bg = "white",width=15,command=lambda:[product_name_label.place_forget(),product_name.place_forget(),product_quantity.place_forget(),product_quantity_label.place_forget(),product_category_label.place_forget(),product_category_n.place_forget(),add_more_category_button.place_forget(),final_insertion_button.place_forget(),add_more_category_button.place_forget(),clear_all_button.place_forget()])
 		#clear_all_button.place(x=340,y=448)
@@ -281,10 +293,8 @@ def option_gui():
 
 #---------- button to final ---------------#
 
-button=Button(window,text="search",bg = "white",width=20,command=option_gui)
+button=Button(window,text="Perform",bg = "white",width=20,command=option_gui)
 button.place(x=300,y=250)
-
-
 
 
 list1=Listbox(window,height=20,width=59)
@@ -299,7 +309,7 @@ scrl.configure(command=list1.yview)
 list1.bind('<<ListboxSelect>>',get_selected_row)
 
 
-b1=Button(window,text="view all",width=12, command=view_command)
+b1=Button(window,text="view all Product name",width=19, command=view_command)
 b1.place(x=700,y=600)
 
 
@@ -309,9 +319,6 @@ quantity_reminder.place(x=1000,y=200)
 
 quantity_reminder_button=Button(window,text="show",bg = "white",width=10,command=lambda:price_reminder(quantity_reminder.get(1.0,END+"-1c")))
 quantity_reminder_button.place(x=1000,y=235)
-
-
-
 
 
 window.mainloop()
