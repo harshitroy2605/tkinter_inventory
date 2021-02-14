@@ -25,7 +25,6 @@ def display_list(name=""):
     cur.execute("SELECT DISTINCT chategory FROM products WHERE name=?",(name,))
     row=cur.fetchall()
     chategory=str(row)
-    #print(type(row))
     chategory=chategory.replace('[','')
     chategory=chategory.replace('(','')
     chategory=chategory.replace("'",'')
@@ -39,10 +38,8 @@ def display_list(name=""):
     rows=cur.fetchall()
     quantity=str(rows)
     quantity=''.join(e for e in quantity if e.isalnum())
-
-
     conn.close()
-    messagebox.showinfo("showinfo",'name : '+name+'\n'+'quantity : '+quantity+'\n'+'chategory : '+chategory)
+    messagebox.showinfo("Product info",'name : '+name+'\n'+'quantity : '+quantity+'\n'+'chategory : '+chategory)
 
 def search(name="",chategory=""):
     conn=sqlite3.connect("database.db")
@@ -51,6 +48,27 @@ def search(name="",chategory=""):
     row=cur.fetchall()
     conn.close()
     return row
+
+
+
+def price_notifier(quantity):
+    conn=sqlite3.connect("database.db")
+    cur=conn.cursor()
+    cur.execute("SELECT DISTINCT name FROM products WHERE quantity<=?",(quantity,))
+    row=cur.fetchall()
+    conn.close()
+    chategory=str(row)
+    chategory=str(row)
+    chategory=chategory.replace('[','')
+    chategory=chategory.replace('(','')
+    chategory=chategory.replace("'",'')
+    chategory=chategory.replace(',','')
+    chategory=chategory.replace(']','')
+    chategory=chategory.replace(')','')
+    messagebox.showinfo("Product info",'name : '+chategory+'\n')
+    #print(row)
+
+
 
 
 
