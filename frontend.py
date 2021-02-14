@@ -99,7 +99,7 @@ def search_entry(name,chategory):
 
 
 def price_reminder(quantity):
-	print(quantity)
+	backend.price_notifier(quantity)
 
 
 def delete_previous_label(choice):
